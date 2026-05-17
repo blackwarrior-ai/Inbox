@@ -1,14 +1,21 @@
 {
   "LOGIN": {
-    "TITLE": "Login to Chatwoot",
+    "TITLE": "Login to DigiLink",
+    "GLASS_TITLE": "Login",
+    "GLASS_SUBTITLE": "Welcome back please login to your account",
+    "REMEMBER_ME": "Remember me",
+    "FOOTER_NO_ACCOUNT": "Don't have an account?",
+    "FOOTER_SIGNUP": "Signup",
     "EMAIL": {
       "LABEL": "Email",
       "PLACEHOLDER": "example{'@'}companyname.com",
+      "GLASS_PLACEHOLDER": "User Name",
       "ERROR": "Please enter a valid email address"
     },
     "PASSWORD": {
       "LABEL": "Password",
-      "PLACEHOLDER": "Password"
+      "PLACEHOLDER": "Password",
+      "GLASS_PLACEHOLDER": "Password"
     },
     "API": {
       "SUCCESS_MESSAGE": "Login successful",

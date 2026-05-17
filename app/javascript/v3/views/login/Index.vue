@@ -7,8 +7,6 @@ import { required, email } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import { SESSION_STORAGE_KEYS } from 'dashboard/constants/sessionStorage';
 import SessionStorage from 'shared/helpers/sessionStorage';
-import { useBranding } from 'shared/composables/useBranding';
-
 // components
 import SimpleDivider from '../../components/Divider/SimpleDivider.vue';
 import FormInput from '../../components/Form/Input.vue';
@@ -46,9 +44,7 @@ export default {
     authError: { type: String, default: '' },
   },
   setup() {
-    const { replaceInstallationName } = useBranding();
     return {
-      replaceInstallationName,
       v$: useVuelidate(),
     };
   },
@@ -68,7 +64,15 @@ export default {
       error: '',
       mfaRequired: false,
       mfaToken: null,
+      rememberMe: false,
     };
+  },
+  mounted() {
+    const saved = localStorage.getItem('digilink_remember_email');
+    if (saved && !this.email) {
+      this.rememberMe = true;
+      this.credentials.email = saved;
+    }
   },
   validations() {
     return {
@@ -162,6 +166,14 @@ export default {
       this.loginApi.hasErrored = false;
       this.loginApi.showLoading = true;
 
+      if (!this.email) {
+        if (this.rememberMe) {
+          localStorage.setItem('digilink_remember_email', this.credentials.email);
+        } else {
+          localStorage.removeItem('digilink_remember_email');
+        }
+      }
+
       const credentials = {
         email: this.email
           ? decodeURIComponent(this.email)
@@ -230,33 +242,17 @@ export default {
 
 <template>
   <main
-    class="flex flex-col w-full min-h-screen py-20 bg-n-brand/5 dark:bg-n-background sm:px-6 lg:px-8"
+    class="relative flex flex-col justify-center w-full min-h-screen py-10 bg-transparent sm:px-6 lg:px-8"
   >
-    <section class="max-w-5xl mx-auto">
-      <img
-        :src="globalConfig.logo"
-        :alt="globalConfig.installationName"
-        class="block w-auto h-8 mx-auto dark:hidden"
-      />
-      <img
-        v-if="globalConfig.logoDark"
-        :src="globalConfig.logoDark"
-        :alt="globalConfig.installationName"
-        class="hidden w-auto h-8 mx-auto dark:block"
-      />
-      <h2 class="mt-6 text-3xl font-medium text-center text-n-slate-12">
-        {{ replaceInstallationName($t('LOGIN.TITLE')) }}
-      </h2>
-      <p v-if="showSignupLink" class="mt-3 text-sm text-center text-n-slate-11">
-        {{ $t('COMMON.OR') }}
-        <router-link to="auth/signup" class="lowercase text-link text-n-brand">
-          {{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}
-        </router-link>
-      </p>
-    </section>
+    <!-- Top-right logo (public folder — bound as runtime URL to avoid Vite bundling) -->
+    <img
+      :src="'/brand-assets/digilink-topright-logo.png'"
+      alt="Digilink"
+      class="absolute top-3 left-4 h-11 w-auto object-contain"
+    />
 
     <!-- MFA Verification Section -->
-    <section v-if="mfaRequired" class="mt-11">
+    <section v-if="mfaRequired" class="mt-8 sm:mt-11">
       <MfaVerification
         :mfa-token="mfaToken"
         @verified="handleMfaVerified"
@@ -267,45 +263,55 @@ export default {
     <!-- Regular Login Section -->
     <section
       v-else
-      class="bg-white shadow sm:mx-auto mt-11 sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+      class="digilink-auth-glass-panel mx-auto w-full"
       :class="{
-        'mb-8 mt-15': !showGoogleOAuth,
         'animate-wiggle': loginApi.hasErrored,
       }"
     >
-      <div v-if="!email">
-        <div class="flex flex-col gap-4">
+      <!-- Spinner while auto-login in progress -->
+      <div v-if="email" class="flex items-center justify-center py-12">
+        <Spinner color-scheme="primary" size="" />
+      </div>
+
+      <!-- Portrait single-column layout -->
+      <div v-else>
+        <!-- OAuth / SSO buttons -->
+        <div
+          v-if="showGoogleOAuth || showSamlLogin"
+          class="flex flex-col gap-3 mb-4"
+        >
           <GoogleOAuthButton v-if="showGoogleOAuth" />
           <div v-if="showSamlLogin" class="text-center">
             <router-link
               to="/app/login/sso"
-              class="inline-flex justify-center w-full px-4 py-3 items-center bg-n-background dark:bg-n-solid-3 rounded-md shadow-sm ring-1 ring-inset ring-n-container dark:ring-n-container focus:outline-offset-0 hover:bg-n-alpha-2 dark:hover:bg-n-alpha-2"
+              class="digilink-auth-social-btn inline-flex justify-center w-full px-4 py-3 items-center bg-n-background dark:bg-n-solid-3 rounded-xl shadow-sm ring-1 ring-inset ring-n-container dark:ring-n-container focus:outline-offset-0 hover:bg-n-alpha-2 dark:hover:bg-n-alpha-2"
             >
-              <Icon
-                icon="i-lucide-lock-keyhole"
-                class="size-5 text-n-slate-11"
-              />
-              <span class="ml-2 text-base font-medium text-n-slate-12">
+              <Icon icon="i-lucide-lock-keyhole" class="size-5 text-white/90" />
+              <span class="ml-2 text-base font-medium text-white/95">
                 {{ $t('LOGIN.SAML.LABEL') }}
               </span>
             </router-link>
           </div>
           <SimpleDivider
-            v-if="showGoogleOAuth || showSamlLogin"
+            class="digilink-glass-or-divider"
             :label="$t('COMMON.OR')"
-            class="uppercase"
+            bg="bg-transparent"
           />
         </div>
-        <form class="space-y-5" @submit.prevent="submitFormLogin">
+
+        <form class="space-y-3" @submit.prevent="submitFormLogin">
           <FormInput
             v-model="credentials.email"
             name="email_address"
             type="text"
             data-testid="email_input"
+            appearance="glass"
+            trailing-decor="user"
+            spacing="compact"
             :tabindex="1"
             required
             :label="$t('LOGIN.EMAIL.LABEL')"
-            :placeholder="$t('LOGIN.EMAIL.PLACEHOLDER')"
+            :placeholder="$t('LOGIN.EMAIL.GLASS_PLACEHOLDER')"
             :has-error="v$.credentials.email.$error"
             @input="v$.credentials.email.$touch"
           />
@@ -314,37 +320,59 @@ export default {
             type="password"
             name="password"
             data-testid="password_input"
-            required
+            appearance="glass"
+            spacing="compact"
             :tabindex="2"
+            required
             :label="$t('LOGIN.PASSWORD.LABEL')"
-            :placeholder="$t('LOGIN.PASSWORD.PLACEHOLDER')"
+            :placeholder="$t('LOGIN.PASSWORD.GLASS_PLACEHOLDER')"
             :has-error="v$.credentials.password.$error"
             @input="v$.credentials.password.$touch"
-          >
-            <p v-if="!globalConfig.disableUserProfileUpdate">
-              <router-link
-                to="auth/reset/password"
-                class="text-sm text-link"
-                tabindex="4"
-              >
-                {{ $t('LOGIN.FORGOT_PASSWORD') }}
-              </router-link>
-            </p>
-          </FormInput>
+          />
+
+          <div class="flex items-center justify-between pt-1">
+            <label
+              class="flex cursor-pointer select-none items-center gap-2 text-sm text-white/90"
+            >
+              <input
+                v-model="rememberMe"
+                type="checkbox"
+                class="digilink-glass-checkbox"
+              />
+              <span>{{ $t('LOGIN.REMEMBER_ME') }}</span>
+            </label>
+            <router-link
+              v-if="!globalConfig.disableUserProfileUpdate"
+              to="auth/reset/password"
+              class="text-sm text-white/90 hover:text-white underline underline-offset-2"
+              :tabindex="4"
+            >
+              {{ $t('LOGIN.FORGOT_PASSWORD') }}
+            </router-link>
+          </div>
+
           <NextButton
             lg
             type="submit"
             data-testid="submit_button"
-            class="w-full"
+            class="digilink-auth-primary-btn w-full !outline-none mt-1"
             :tabindex="3"
             :label="$t('LOGIN.SUBMIT')"
             :disabled="loginApi.showLoading"
             :is-loading="loginApi.showLoading"
           />
         </form>
-      </div>
-      <div v-else class="flex items-center justify-center">
-        <Spinner color-scheme="primary" size="" />
+
+        <p
+          v-if="showSignupLink"
+          class="digilink-auth-footer-muted mt-6 text-center text-sm"
+        >
+          {{ $t('LOGIN.FOOTER_NO_ACCOUNT') }}
+          {{ ' ' }}
+          <router-link to="auth/signup" class="font-semibold text-link text-n-brand">
+            {{ $t('LOGIN.FOOTER_SIGNUP') }}
+          </router-link>
+        </p>
       </div>
     </section>
   </main>

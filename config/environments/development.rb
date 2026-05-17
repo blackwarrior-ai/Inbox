@@ -26,6 +26,10 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
 
     config.cache_store = :null_store
+    # Helps avoid stale branded assets / fingerprints on localhost refresh.
+    config.public_file_server.headers = {
+      'Cache-Control' => 'no-store, must-revalidate, max-age=0',
+    }
   end
   config.public_file_server.enabled = true
 

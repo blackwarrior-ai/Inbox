@@ -21,6 +21,9 @@ By default, it renders:
   <title>
     <%= content_for(:title) %> - <%= application_title %>
   </title>
+  <% sa_logo = InstallationConfig.find_by(name: 'LOGO_THUMBNAIL')&.value.presence || '/brand-assets/logo_thumbnail.svg' %>
+  <% sa_logo_mime = sa_logo.to_s.downcase.end_with?('.svg') ? 'image/svg+xml' : 'image/png' %>
+  <link rel="icon" type="<%= sa_logo_mime %>" href="<%= sa_logo %>" sizes="any">
   <%= render "stylesheet" %>
   <%= vite_client_tag %>
   <%= vite_javascript_tag 'superadmin' %>

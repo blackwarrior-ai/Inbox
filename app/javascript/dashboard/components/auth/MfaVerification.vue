@@ -158,33 +158,36 @@ const handleTryAnotherMethod = () => {
 <template>
   <div class="w-full max-w-md mx-auto">
     <div
-      class="bg-white shadow sm:mx-auto sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+      class="digilink-auth-glass-panel sm:mx-auto sm:w-full sm:max-w-lg sm:rounded-lg"
     >
       <!-- Header -->
-      <div class="text-center mb-6">
+      <div class="mb-6 text-center">
         <div
-          class="inline-flex items-center justify-center size-14 bg-n-solid-1 outline outline-n-weak rounded-full mb-4"
+          class="mb-4 inline-flex size-14 items-center justify-center rounded-full border border-white/50 bg-white/15 shadow-inner backdrop-blur-sm"
         >
-          <Icon icon="i-lucide-lock-keyhole" class="size-6 text-n-slate-10" />
+          <Icon icon="i-lucide-lock-keyhole" class="size-6 text-white/90" />
         </div>
-        <h2 class="text-2xl font-semibold text-n-slate-12">
+        <h2 class="digilink-glass-card-title text-center !text-2xl">
           {{ $t('MFA_VERIFICATION.TITLE') }}
         </h2>
-        <p class="text-sm text-n-slate-11 mt-2">
+        <p class="digilink-glass-card-subtitle mt-2 text-center !text-sm">
           {{ $t('MFA_VERIFICATION.DESCRIPTION') }}
         </p>
       </div>
 
       <!-- Tab Selection -->
-      <div class="flex rounded-lg bg-n-alpha-black2 p-1 mb-6">
+      <div
+        class="mb-6 flex rounded-full bg-white/10 p-1 ring-1 ring-inset ring-white/20"
+      >
         <button
           v-for="method in [OTP, BACKUP]"
           :key="method"
-          class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors"
+          type="button"
+          class="flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors"
           :class="
             verificationMethod === method
-              ? 'bg-n-solid-active text-n-slate-12 shadow-sm'
-              : 'text-n-slate-12'
+              ? 'bg-white/25 text-white shadow-sm'
+              : 'text-white/75 hover:text-white'
           "
           @click="verificationMethod = method"
         >
@@ -200,7 +203,9 @@ const handleTryAnotherMethod = () => {
       <form class="space-y-4" @submit.prevent="handleVerification">
         <!-- OTP Code Input -->
         <div v-if="verificationMethod === OTP">
-          <label class="block text-sm font-medium text-n-slate-12 mb-2">
+          <label
+            class="mb-2 block text-sm font-medium text-white/90"
+          >
             {{ $t('MFA_VERIFICATION.ENTER_OTP_CODE') }}
           </label>
           <div class="flex justify-between gap-2">
@@ -213,7 +218,7 @@ const handleTryAnotherMethod = () => {
               maxlength="1"
               pattern="[0-9]"
               inputmode="numeric"
-              class="w-12 h-12 text-center text-lg font-semibold border-2 border-n-weak hover:border-n-strong rounded-lg focus:border-n-brand bg-n-alpha-black2 text-n-slate-12 placeholder:text-n-slate-10"
+              class="digilink-glass-otp-cell size-12 rounded-full border border-white/70 bg-white/[0.14] text-center text-lg font-semibold text-white shadow-sm backdrop-blur-md placeholder:text-white/40 focus:border-white focus:outline-none focus:ring-2 focus:ring-white/45"
               @input="handleOtpInput(i)"
               @keydown.left.prevent="focusInput(i - 1)"
               @keydown.right.prevent="focusInput(i + 1)"
@@ -230,6 +235,7 @@ const handleTryAnotherMethod = () => {
             name="backup_code"
             type="text"
             data-testid="backup_code_input"
+            appearance="glass"
             :tabindex="1"
             required
             :label="$t('MFA_VERIFICATION.ENTER_BACKUP_CODE')"
@@ -243,9 +249,9 @@ const handleTryAnotherMethod = () => {
         <!-- Error Message -->
         <div
           v-if="errorMessage"
-          class="p-3 bg-n-ruby-3 outline outline-n-ruby-5 outline-1 rounded-lg"
+          class="rounded-xl border border-red-300/45 bg-red-500/15 p-3 backdrop-blur-sm"
         >
-          <p class="text-sm text-n-ruby-9">{{ errorMessage }}</p>
+          <p class="text-sm text-red-100">{{ errorMessage }}</p>
         </div>
 
         <!-- Submit Button -->
@@ -253,7 +259,7 @@ const handleTryAnotherMethod = () => {
           lg
           type="submit"
           data-testid="submit_button"
-          class="w-full"
+          class="digilink-auth-primary-btn w-full !outline-none"
           :tabindex="2"
           :label="$t('MFA_VERIFICATION.VERIFY_BUTTON')"
           :disabled="!canSubmit || isVerifying"
@@ -261,12 +267,12 @@ const handleTryAnotherMethod = () => {
         />
 
         <!-- Alternative Actions -->
-        <div class="text-center flex items-center flex-col gap-2 pt-4">
+        <div class="flex flex-col items-center gap-2 pt-4 text-center">
           <NextButton
             sm
             link
             type="button"
-            class="w-full hover:!no-underline"
+            class="w-full !text-white/90 hover:!text-white hover:!no-underline"
             :tabindex="2"
             :label="$t('MFA_VERIFICATION.TRY_ANOTHER_METHOD')"
             @click="handleTryAnotherMethod"
@@ -276,7 +282,7 @@ const handleTryAnotherMethod = () => {
             slate
             link
             type="button"
-            class="w-full hover:!no-underline"
+            class="w-full !text-white/90 hover:!text-white hover:!no-underline"
             :tabindex="3"
             :label="$t('MFA_VERIFICATION.CANCEL_LOGIN')"
             @click="() => emit('cancel')"
@@ -286,7 +292,7 @@ const handleTryAnotherMethod = () => {
     </div>
 
     <!-- Help Text -->
-    <div class="mt-6 text-center">
+    <div class="mt-6 text-center digilink-auth-footer-muted">
       <p class="text-sm text-n-slate-11">
         {{ $t('MFA_VERIFICATION.HELP_TEXT') }}
       </p>
@@ -294,7 +300,7 @@ const handleTryAnotherMethod = () => {
         sm
         link
         type="button"
-        class="w-full hover:!no-underline"
+        class="w-full !text-white/90 hover:!text-white hover:!no-underline"
         :tabindex="4"
         :label="$t('MFA_VERIFICATION.LEARN_MORE')"
         @click="helpModalRef?.open()"

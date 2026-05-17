@@ -5,6 +5,11 @@
       <%= @global_config['INSTALLATION_NAME'] %>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=0"/>
+    <%# Prefer vector favicon site-wide (LOGO_THUMBNAIL defaults to brand-assets); PNG links below kept for manifests / badges %>
+    <% logo_thumb_href = @global_config['LOGO_THUMBNAIL'].presence || '/brand-assets/logo_thumbnail.svg' %>
+    <% logo_thumb_mime = logo_thumb_href.to_s.downcase.end_with?('.svg') ? 'image/svg+xml' : 'image/png' %>
+    <link rel="icon" type="<%= logo_thumb_mime %>" href="<%= logo_thumb_href %>" sizes="any">
+
     <% if @global_config['DISPLAY_MANIFEST'] %>
       <meta name="msapplication-TileColor" content="#1f93ff">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -28,7 +33,7 @@
       <link class="favicon" rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
       <link rel="manifest" href="/manifest.json">
     <% end %>
-    <link rel="icon" type="image/png" sizes="512x512" href="<%= @global_config['LOGO_THUMBNAIL'] %>">
+    <link rel="icon" type="<%= logo_thumb_mime %>" sizes="512x512" href="<%= logo_thumb_href %>">
     <%= csrf_meta_tags %>
     <script>
       window.chatwootConfig = {

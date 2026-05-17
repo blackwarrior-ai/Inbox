@@ -69,35 +69,31 @@ onMounted(async () => {
 
 <template>
   <main
-    class="flex flex-col w-full min-h-screen py-20 bg-n-brand/5 dark:bg-n-background sm:px-6 lg:px-8"
+    class="relative flex flex-col justify-center w-full min-h-screen py-10 bg-transparent sm:px-6 lg:px-8"
   >
-    <section class="max-w-5xl mx-auto">
-      <img
-        :src="globalConfig.logo"
-        :alt="globalConfig.installationName"
-        class="block w-auto h-8 mx-auto dark:hidden"
-      />
-      <img
-        v-if="globalConfig.logoDark"
-        :src="globalConfig.logoDark"
-        :alt="globalConfig.installationName"
-        class="hidden w-auto h-8 mx-auto dark:block"
-      />
-      <h2 class="mt-6 text-3xl font-medium text-center text-n-slate-12">
-        {{ t('LOGIN.SAML.TITLE') }}
-      </h2>
-    </section>
+    <img
+      :src="'/brand-assets/digilink-topright-logo.png'"
+      alt="Digilink"
+      class="absolute top-3 left-4 h-11 w-auto object-contain"
+    />
     <section
-      class="bg-white shadow sm:mx-auto mt-11 sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+      class="digilink-auth-glass-panel mx-auto w-full"
       :class="{
         'animate-wiggle': loginApi.hasErrored,
       }"
     >
-      <form class="space-y-5" method="POST" action="/api/v1/auth/saml_login">
+      <form
+        class="space-y-5"
+        method="POST"
+        action="/api/v1/auth/saml_login"
+      >
         <FormInput
           v-model="credentials.email"
           name="email"
           type="text"
+          appearance="glass"
+          hide-field-label
+          trailing-decor="user"
           :tabindex="1"
           required
           :label="t('LOGIN.SAML.WORK_EMAIL.LABEL')"
@@ -115,7 +111,7 @@ onMounted(async () => {
         <NextButton
           lg
           type="submit"
-          class="w-full"
+          class="digilink-auth-primary-btn w-full !outline-none"
           :tabindex="2"
           :label="t('LOGIN.SAML.SUBMIT')"
           :disabled="loginApi.showLoading"
@@ -123,7 +119,7 @@ onMounted(async () => {
         />
       </form>
     </section>
-    <p class="mt-6 text-sm text-center text-n-slate-11">
+    <p class="mt-6 text-sm text-center digilink-auth-footer-muted">
       <router-link to="/app/login" class="text-link text-n-brand">
         {{ t('LOGIN.SAML.BACK_TO_LOGIN') }}
       </router-link>

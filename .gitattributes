@@ -1,0 +1,3 @@
+# Keep Ruby shebang bins Unix-safe on Windows clones (fixes `env: ruby\r` in WSL).
+bin/** text eol=lf
+scripts/** text eol=lf

@@ -6,6 +6,8 @@ defineProps({
   hasError: { type: Boolean, default: false },
   helpMessage: { type: String, default: '' },
   errorMessage: { type: String, default: '' },
+  /** Screen-reader only; keep label for a11y when using placeholder-only fields */
+  labelHidden: { type: Boolean, default: false },
 });
 </script>
 
@@ -15,7 +17,10 @@ defineProps({
       v-if="label"
       :for="name"
       class="flex justify-between text-sm font-medium leading-6 text-n-slate-12"
-      :class="{ 'text-n-ruby-12': hasError }"
+      :class="{
+        'text-n-ruby-12': hasError,
+        'sr-only': labelHidden,
+      }"
     >
       <slot name="label">
         {{ label }}

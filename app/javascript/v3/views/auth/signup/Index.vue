@@ -4,8 +4,6 @@ import { useStore } from 'vuex';
 import SignupForm from './components/Signup/Form.vue';
 import Testimonials from './components/Testimonials/Index.vue';
 import Spinner from 'shared/components/Spinner.vue';
-import signupBg from 'assets/images/auth/signup-bg.jpg';
-
 const store = useStore();
 
 const isLoading = ref(false);
@@ -25,15 +23,16 @@ const resizeContainers = () => {
 
 <template>
   <div
-    class="relative w-full h-full min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat p-4"
-    :style="{ backgroundImage: `url(${signupBg})` }"
+    class="relative w-full h-full min-h-screen flex items-center justify-center bg-transparent p-4 sm:px-6 lg:px-8"
   >
-    <div
-      class="absolute inset-0 bg-n-gray-12/60 dark:bg-n-gray-1/80 backdrop-blur-sm"
+    <img
+      :src="'/brand-assets/digilink-topright-logo.png'"
+      alt="Digilink"
+      class="absolute top-3 left-4 h-11 w-auto object-contain z-10"
     />
     <div
       v-show="!isLoading"
-      class="relative flex max-w-[960px] bg-white dark:bg-n-solid-2 rounded-lg outline outline-1 outline-n-container shadow-sm"
+      class="relative flex max-w-[960px] digilink-auth-glass-signup-panel rounded-lg"
       :class="{ 'w-auto xl:w-full': isAChatwootInstance }"
     >
       <div class="flex-1 flex items-center justify-center py-10 px-10">
@@ -50,17 +49,17 @@ const resizeContainers = () => {
               :alt="globalConfig.installationName"
               class="hidden w-auto h-7 dark:block"
             />
-            <h2 class="mt-6 text-2xl font-semibold text-n-slate-12">
+            <h2 class="digilink-glass-card-title mt-6 !text-2xl">
               {{
                 isAChatwootInstance
                   ? $t('REGISTER.GET_STARTED')
                   : $t('REGISTER.TRY_WOOT')
               }}
             </h2>
-            <p class="mt-2 text-sm text-n-slate-11">
+            <p class="digilink-glass-card-subtitle mt-2 !text-sm">
               {{ $t('REGISTER.HAVE_AN_ACCOUNT') }}{{ ' '
               }}<router-link
-                class="text-n-blue-10 font-medium hover:text-n-blue-11"
+                class="font-semibold text-white underline decoration-white/45 underline-offset-2 hover:text-white hover:decoration-white"
                 to="/app/login"
               >
                 {{ $t('LOGIN.SUBMIT') }}

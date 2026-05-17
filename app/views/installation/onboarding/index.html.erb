@@ -1,79 +1,139 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SuperAdmin | Chatwoot</title>
+    <title>Setup | DigiLink</title>
     <%= vite_client_tag %>
     <%= vite_javascript_tag 'superadmin' %>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .dl-page {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+        padding: 2.5rem 1.5rem;
+        background-image: url('/brand-assets/digilink-login-bg.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+      .dl-logo {
+        position: absolute;
+        top: 0.75rem;
+        left: 1rem;
+        height: 2.75rem;
+        width: auto;
+        object-fit: contain;
+      }
+      .dl-card {
+        width: 100%;
+        max-width: 31rem;
+        padding: 2rem;
+        border-radius: 1rem;
+        background: rgba(0,0,0,0.05);
+        border: 1px solid rgba(255,255,255,0.20);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      .dl-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: rgba(255,255,255,0.95);
+        margin-bottom: 0.35rem;
+      }
+      .dl-field-wrap { margin-bottom: 1.1rem; }
+      .dl-input {
+        display: block;
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255,255,255,0.45);
+        color: #fff;
+        font-size: 0.875rem;
+        padding: 0.45rem 0.25rem 0.45rem 0;
+        outline: none;
+        appearance: none;
+        border-radius: 0;
+      }
+      .dl-input::placeholder { color: rgba(255,255,255,0.50); }
+      .dl-input:focus { border-bottom-color: rgba(255,255,255,0.90); }
+      .dl-checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8125rem;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 0.5rem;
+      }
+      .dl-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        margin-top: 1.25rem;
+        background: #9a6a6a;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 0.6rem;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        transition: filter 0.15s;
+      }
+      .dl-btn:hover { filter: brightness(1.07); }
+      .dl-error {
+        border-radius: 0.5rem;
+        background: rgba(239,68,68,0.15);
+        border: 1px solid rgba(239,68,68,0.4);
+        color: #fecaca;
+        font-size: 0.875rem;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+      }
+    </style>
   </head>
   <body>
-    <div class="h-full w-full antialiased">
-      <main class="flex flex-col bg-woot-25 min-h-screen w-full py-20 sm:px-6 lg:px-8 dark:bg-slate-900">
-        <section class="max-w-5xl mx-auto">
-          <img src="/brand-assets/logo.svg" alt="Chatwoot" class="mx-auto h-8 w-auto block dark:hidden">
-          <img src="/brand-assets/logo_dark.svg" alt="Chatwoot" class="mx-auto h-8 w-auto hidden dark:block">
-          <h2 class="mt-6 text-center text-3xl font-medium text-slate-900 dark:text-woot-50">
-            Howdy, Welcome to Chatwoot 👋
-          </h2>
-        </section>
-        <section class="bg-white shadow sm:mx-auto mt-11 sm:w-full sm:max-w-lg dark:bg-slate-800 p-11 sm:shadow-lg sm:rounded-lg mb-8 mt-15">
-          <div>
-            <%= form_tag('/installation/onboarding') do %>
-            <div class="space-y-5">
-              <% if flash[:error].present? %>
-                <div class="rounded-md bg-red-500 p-4 text-white text-sm mb-5"><%= flash[:error] %></div>
-              <% end %>
-
-              <div>
-                <label for="name" class="flex justify-between text-sm font-medium leading-6 text-slate-900 dark:text-white">
-                  Name
-                </label>
-                <div class="mt-1">
-                  <%= text_field :user, :name, placeholder: "Enter your full name. eg: Bruce Wayne", required: true, class: "block w-full rounded-md border-0 px-3 py-3 appearance-none shadow-sm ring-1 ring-inset text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-woot-500 sm:text-sm sm:leading-6 outline-none dark:bg-slate-700 dark:ring-slate-600 dark:focus:ring-woot-500 ring-slate-200" %>
-                </div>
-              </div>
-
-              <div>
-                <label for="name" class="flex justify-between text-sm font-medium leading-6 text-slate-900 dark:text-white">
-                  Company Name
-                </label>
-                <div class="mt-1">
-                  <%= text_field :user, :company, placeholder: "Enter your company name. eg: Wayne Enterprises", required: true, class: "block w-full rounded-md border-0 px-3 py-3 appearance-none shadow-sm ring-1 ring-inset text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-woot-500 sm:text-sm sm:leading-6 outline-none dark:bg-slate-700 dark:ring-slate-600 dark:focus:ring-woot-500 ring-slate-200" %>
-                </div>
-              </div>
-
-              <div>
-                <label for="name" class="flex justify-between text-sm font-medium leading-6 text-slate-900 dark:text-white">
-                  Work Email
-                </label>
-                <div class="mt-1">
-                  <%= email_field :user, :email, placeholder: "Enter your work email address. eg: bruce@wayne.enterprises", required: true, class: "block w-full rounded-md border-0 px-3 py-3 appearance-none shadow-sm ring-1 ring-inset text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-woot-500 sm:text-sm sm:leading-6 outline-none dark:bg-slate-700 dark:ring-slate-600 dark:focus:ring-woot-500 ring-slate-200" %>
-                </div>
-              </div>
-
-              <div>
-                <label for="name" class="flex justify-between text-sm font-medium leading-6 text-slate-900 dark:text-white">
-                  Password
-                </label>
-                <div class="mt-1">
-                  <%= password_field :user, :password, placeholder: "Enter a password with 6 characters or more.", required: true, class: "block w-full rounded-md border-0 px-3 py-3 appearance-none shadow-sm ring-1 ring-inset text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-woot-500 sm:text-sm sm:leading-6 outline-none dark:bg-slate-700 dark:ring-slate-600 dark:focus:ring-woot-500 ring-slate-200" %>
-                </div>
-              </div>
-
-              <div class="text-sm text-slate-900">
-                <%= check_box_tag "subscribe_to_updates", 'true', true %>
-                <label class="ml-2" for="subscribe_to_updates">
-                  Subscribe to release notes, newsletters & product feedback surveys.
-                </label>
-              </div>
-
-              <button type="submit" class="flex items-center w-full justify-center rounded-md bg-woot-500 py-3 px-3 text-base font-medium text-white shadow-sm hover:bg-woot-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-woot-500 cursor-pointer">
-                Finish Setup
-              </button>
-            </div>
-            <% end %>
+    <div class="dl-page">
+      <img src="/brand-assets/digilink-topright-logo.png" alt="Digilink" class="dl-logo">
+      <div class="dl-card">
+        <%= form_tag('/installation/onboarding') do %>
+          <% if flash[:error].present? %>
+            <div class="dl-error"><%= flash[:error] %></div>
+          <% end %>
+          <div class="dl-field-wrap">
+            <label class="dl-label">Name</label>
+            <%= text_field :user, :name, placeholder: "Enter your full name. eg: Bruce Wayne",
+                required: true, class: "dl-input" %>
           </div>
-        </section>
-      </main>
+          <div class="dl-field-wrap">
+            <label class="dl-label">Company Name</label>
+            <%= text_field :user, :company, placeholder: "Enter your company name. eg: Wayne Enterprises",
+                required: true, class: "dl-input" %>
+          </div>
+          <div class="dl-field-wrap">
+            <label class="dl-label">Work Email</label>
+            <%= email_field :user, :email, placeholder: "Enter your work email address.",
+                required: true, class: "dl-input" %>
+          </div>
+          <div class="dl-field-wrap">
+            <label class="dl-label">Password</label>
+            <%= password_field :user, :password, placeholder: "Enter a password with 6 characters or more.",
+                required: true, class: "dl-input" %>
+          </div>
+          <div class="dl-checkbox-row">
+            <%= check_box_tag "subscribe_to_updates", 'true', true %>
+            <label for="subscribe_to_updates">Subscribe to release notes & newsletters.</label>
+          </div>
+          <button type="submit" class="dl-btn">Finish Setup</button>
+        <% end %>
+      </div>
     </div>
   </body>
 </html>

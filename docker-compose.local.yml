@@ -1,0 +1,27 @@
+# Local dependencies only: Postgres (with pgvector) + Redis for native Chatwoot dev.
+# From this folder: docker compose -f docker-compose.local.yml up -d
+# Stop: docker compose -f docker-compose.local.yml down
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: chatwoot-postgres-local
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - chatwoot-pgdata-local:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: chatwoot-redis-local
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+
+volumes:
+  chatwoot-pgdata-local:

@@ -87,15 +87,18 @@ export default {
 
 <template>
   <div
-    class="flex flex-col justify-center w-full min-h-screen py-12 bg-n-brand/5 dark:bg-n-background sm:px-6 lg:px-8"
+    class="relative flex flex-col justify-center w-full min-h-screen py-10 bg-transparent sm:px-6 lg:px-8"
   >
+    <img
+      :src="'/brand-assets/digilink-topright-logo.png'"
+      alt="Digilink"
+      class="absolute top-3 left-4 h-11 w-auto object-contain"
+    />
     <form
-      class="bg-white shadow sm:mx-auto sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+      class="digilink-auth-glass-panel mx-auto w-full"
       @submit.prevent="submitForm"
     >
-      <h1
-        class="mb-1 text-2xl font-medium tracking-tight text-left text-n-slate-12"
-      >
+      <h1 class="digilink-glass-card-title mb-6 !text-2xl">
         {{ $t('SET_NEW_PASSWORD.TITLE') }}
       </h1>
 
@@ -105,8 +108,10 @@ export default {
           class="mt-3"
           name="password"
           type="password"
+          appearance="glass"
           :has-error="v$.credentials.password.$error"
           :error-message="$t('SET_NEW_PASSWORD.PASSWORD.ERROR')"
+          :label="$t('LOGIN.PASSWORD.LABEL')"
           :placeholder="$t('SET_NEW_PASSWORD.PASSWORD.PLACEHOLDER')"
           @blur="v$.credentials.password.$touch"
         />
@@ -115,8 +120,10 @@ export default {
           class="mt-3"
           name="confirm_password"
           type="password"
+          appearance="glass"
           :has-error="v$.credentials.confirmPassword.$error"
           :error-message="$t('SET_NEW_PASSWORD.CONFIRM_PASSWORD.ERROR')"
+          :label="$t('SET_NEW_PASSWORD.CONFIRM_PASSWORD.LABEL')"
           :placeholder="$t('SET_NEW_PASSWORD.CONFIRM_PASSWORD.PLACEHOLDER')"
           @blur="v$.credentials.confirmPassword.$touch"
         />
@@ -124,7 +131,7 @@ export default {
           lg
           type="submit"
           data-testid="submit_button"
-          class="w-full"
+          class="digilink-auth-primary-btn w-full !outline-none"
           :label="$t('SET_NEW_PASSWORD.SUBMIT')"
           :disabled="
             v$.credentials.password.$invalid ||

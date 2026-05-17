@@ -64,26 +64,29 @@ export default {
 
 <template>
   <div
-    class="flex flex-col justify-center w-full min-h-screen py-12 bg-n-brand/5 dark:bg-n-background sm:px-6 lg:px-8"
+    class="relative flex flex-col justify-center w-full min-h-screen py-10 bg-transparent sm:px-6 lg:px-8"
   >
+    <img
+      :src="'/brand-assets/digilink-topright-logo.png'"
+      alt="Digilink"
+      class="absolute top-3 left-4 h-11 w-auto object-contain"
+    />
     <form
-      class="bg-white shadow sm:mx-auto sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+      class="digilink-auth-glass-panel mx-auto w-full"
       @submit.prevent="submit"
     >
-      <h1
-        class="mb-1 text-2xl font-medium tracking-tight text-left text-n-slate-12"
-      >
+      <h1 class="digilink-glass-card-title mb-1 !text-2xl">
         {{ $t('RESET_PASSWORD.TITLE') }}
       </h1>
-      <p
-        class="mb-4 text-sm font-normal leading-6 tracking-normal text-n-slate-11"
-      >
+      <p class="digilink-glass-card-subtitle mb-6 !text-sm">
         {{ replaceInstallationName($t('RESET_PASSWORD.DESCRIPTION')) }}
       </p>
       <div class="space-y-5">
         <FormInput
           v-model="credentials.email"
           name="email_address"
+          appearance="glass"
+          :label="$t('LOGIN.EMAIL.LABEL')"
           :has-error="v$.credentials.email.$error"
           :error-message="$t('RESET_PASSWORD.EMAIL.ERROR')"
           :placeholder="$t('RESET_PASSWORD.EMAIL.PLACEHOLDER')"
@@ -93,15 +96,15 @@ export default {
           lg
           type="submit"
           data-testid="submit_button"
-          class="w-full"
+          class="digilink-auth-primary-btn w-full !outline-none"
           :label="$t('RESET_PASSWORD.SUBMIT')"
           :disabled="v$.credentials.email.$invalid || resetPassword.showLoading"
           :is-loading="resetPassword.showLoading"
         />
       </div>
-      <p class="mt-4 -mb-1 text-sm text-n-slate-11">
+      <p class="digilink-auth-footer-muted mt-6 text-sm">
         {{ $t('RESET_PASSWORD.GO_BACK_TO_LOGIN') }}
-        <router-link to="/auth/login" class="text-link text-n-brand">
+        <router-link :to="{ name: 'login' }" class="text-link text-n-brand">
           {{ $t('COMMON.CLICK_HERE') }}.
         </router-link>
       </p>

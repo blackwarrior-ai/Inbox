@@ -124,6 +124,7 @@ const onCaptchaError = () => {
         v-model="credentials.email"
         type="email"
         name="email_address"
+        appearance="glass"
         :class="{ error: v$.credentials.email.$error }"
         :label="$t('REGISTER.EMAIL.LABEL')"
         :placeholder="$t('REGISTER.EMAIL.PLACEHOLDER')"
@@ -136,6 +137,7 @@ const onCaptchaError = () => {
           v-model="credentials.password"
           type="password"
           name="password"
+          appearance="glass"
           :class="{ error: v$.credentials.password.$error }"
           :label="$t('LOGIN.PASSWORD.LABEL')"
           :placeholder="$t('SET_NEW_PASSWORD.PASSWORD.PLACEHOLDER')"
@@ -175,7 +177,7 @@ const onCaptchaError = () => {
         lg
         type="submit"
         data-testid="submit_button"
-        class="w-full font-medium"
+        class="digilink-auth-primary-btn w-full !outline-none font-medium"
         :label="$t('REGISTER.SUBMIT')"
         :disabled="isSignupInProgress || !isFormValid"
         :is-loading="isSignupInProgress"
@@ -185,7 +187,7 @@ const onCaptchaError = () => {
       {{ $t('REGISTER.OAUTH.GOOGLE_SIGNUP') }}
     </GoogleOAuthButton>
     <p
-      class="text-sm mt-5 mb-0 text-n-slate-11 [&>a]:text-n-blue-10 [&>a]:font-medium [&>a]:hover:text-n-blue-11"
+      class="digilink-glass-terms mt-5 mb-0 text-sm text-white/80 [&>a]:font-semibold [&>a]:text-white [&>a]:underline [&>a]:decoration-white/50 [&>a]:underline-offset-2"
       v-html="termsLink"
     />
   </div>

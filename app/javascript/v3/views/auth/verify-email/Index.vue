@@ -70,16 +70,21 @@ const onCaptchaError = () => {
 
 <template>
   <main
-    class="flex flex-col w-full min-h-screen py-20 bg-n-brand/5 dark:bg-n-background sm:px-6 lg:px-8"
+    class="relative flex flex-col justify-center w-full min-h-screen py-10 bg-transparent sm:px-6 lg:px-8"
   >
+    <img
+      :src="'/brand-assets/digilink-topright-logo.png'"
+      alt="Digilink"
+      class="absolute top-3 left-4 h-11 w-auto object-contain"
+    />
     <section
-      class="bg-white shadow sm:mx-auto mt-11 sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+      class="digilink-auth-glass-panel mx-auto w-full"
     >
       <div class="mb-6">
-        <h2 class="text-2xl font-semibold text-n-slate-12">
+        <h2 class="digilink-glass-card-title !text-2xl">
           {{ $t('REGISTER.VERIFY_EMAIL.TITLE') }}
         </h2>
-        <p class="mt-2 text-sm text-n-slate-11">
+        <p class="digilink-glass-card-subtitle mt-2 !text-sm">
           {{ $t('REGISTER.VERIFY_EMAIL.DESCRIPTION', { email }) }}
         </p>
       </div>
@@ -99,7 +104,7 @@ const onCaptchaError = () => {
           lg
           type="button"
           data-testid="resend_email_button"
-          class="w-full"
+          class="digilink-auth-primary-btn w-full !outline-none"
           :label="$t('REGISTER.VERIFY_EMAIL.RESEND')"
           :is-loading="isResendingEmail"
           @click="handleResendEmail"

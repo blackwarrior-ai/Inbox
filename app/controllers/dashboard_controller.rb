@@ -5,11 +5,7 @@ class DashboardController < ActionController::Base
     LOGO
     LOGO_DARK
     LOGO_THUMBNAIL
-    INSTALLATION_NAME
-    WIDGET_BRAND_URL
     TERMS_URL
-    BRAND_URL
-    BRAND_NAME
     PRIVACY_URL
     DISPLAY_MANIFEST
     CREATE_NEW_ACCOUNT_FROM_DASHBOARD
@@ -23,7 +19,6 @@ class DashboardController < ActionController::Base
     LOGOUT_REDIRECT_LINK
     DISABLE_USER_PROFILE_UPDATE
     DEPLOYMENT_ENV
-    INSTALLATION_PRICING_PLAN
   ].freeze
 
   before_action :set_application_pack
@@ -78,6 +73,11 @@ class DashboardController < ActionController::Base
       WHATSAPP_APP_ID: GlobalConfigService.load('WHATSAPP_APP_ID', ''),
       WHATSAPP_CONFIGURATION_ID: GlobalConfigService.load('WHATSAPP_CONFIGURATION_ID', ''),
       IS_ENTERPRISE: ChatwootApp.enterprise?,
+      INSTALLATION_PRICING_PLAN: ChatwootApp.self_hosted_enterprise? ? 'enterprise' : 'community',
+      INSTALLATION_NAME: 'DigiLink',
+      BRAND_NAME: 'DigiLink',
+      BRAND_URL: 'https://www.digilink.com',
+      WIDGET_BRAND_URL: 'https://www.digilink.com',
       AZURE_APP_ID: GlobalConfigService.load('AZURE_APP_ID', ''),
       GIT_SHA: GIT_HASH,
       ALLOWED_LOGIN_METHODS: allowed_login_methods,
